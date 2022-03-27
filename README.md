@@ -4,20 +4,22 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/abroniewski/IdleCompute-Data-Management-Architecture)
 ![GitHub stars](https://img.shields.io/github/stars/abroniewski/IdleCompute-Data-Management-Architecture?style=social)
 
-## Table of Contents
+## Table of contents
 - [Getting Started](#getting-started)
 	- [Tools Required](#tools-required)
 	- [Installation](#installation)
 - [Development](#development)
-    - [Part 1: Landing Zone](#part-1-landing-zone)
-	  - [Step 1: Subheading](#step-1-subheading)
-	  - [Step 2: Subheading](#step-2-subheading)
-	- [Part 2: Heading](#part-2-heading)
+	- [Part 1: Landing Zone](#part-1-landing-zone)
+		- [Data Sources](#data-sources)
+		- [Data Collector](#data-collector)
+		- [Temporal Landing Zone](#temporal-landing-zone)
+		- [Data Persistance Loader](#data-persistance-loader)
+		- [Persistant Landing](#persistant-landing)
+	- [Part 2: Formatted and Exploitation Zone](#part-2-formatted-and-exploitation-zone)
 - [Running the App](#running-the-app)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [Versioning](#versioning)
 - [Authors](#authors)
+	- [Adam Broniewski](#adam-broniewski)
+	- [Vlada Kylynnyk](#vlada-kylynnyk)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -49,7 +51,7 @@ You would require the following tools to develop and run the project:
 
 ### Installation
 
-Installation steps for virtual environment and HDFS are locate in [here in /docs] (https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/docs)
+Installation steps for virtual environment and HDFS are locate in [here in /docs](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/docs)
 
 ## Development
 
@@ -118,7 +120,7 @@ Steps and commands for running the app will be included here
 
 ## License
 
-`Project Title` is open source software [licensed as MIT][license].
+`IdleCompute Data Management Architecture` is open source software [licensed as MIT][license].
 
 ## Acknowledgments
 
