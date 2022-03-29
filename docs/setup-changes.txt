@@ -1,5 +1,5 @@
 HADOOP install
-Follow steps located here:
+Follow steps located here (thank you Pietro!):
     https://towardsdatascience.com/installing-hadoop-on-a-mac-ec01c67b003c
 
 ### Deviations from steps ###
