@@ -1,0 +1,28 @@
+HADOOP install
+Follow steps located here:
+    https://towardsdatascience.com/installing-hadoop-on-a-mac-ec01c67b003c
+
+### Deviations from steps ###
+
+For my mac, hadoop-env.sh is located here:
+    /opt/homebrew/Cellar/hadoop/3.3.2/libexec/etc/hadoop
+
+The following changes were made to the hadoop-env.sh file:
+    export JAVA_HOME="$JAVA_HOME"
+    export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true -Djava.security.krb5.realm= -Djava.security.krb5.kdc="
+
+
+HADOOP step-by-step setup
+1) Start hadoop
+2) create hadoop home directory (where adambroniewski is replace with your user name) using:
+    hadoop fs -mkdir -p /user/adambroniewski
+3) now you can create an HDFS directory. Here we create a directory called "data"
+    hadoop fs -mkdir data
+4) Check that the directory exists:
+    hadoop fs -ls
+        you should see something like:
+        Found 1 items
+        drwxr-xr-x   - adambroniewski supergroup          0 2022-03-30 00:11 data
+    If you get a "No such file or directory" error, you still don't have a home directory setup
+
+
