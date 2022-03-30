@@ -157,3 +157,6 @@ orleans.codegen.cs
 
 # Local History for Visual Studio
 .localhistory/
+
+#raw and processed data files
+/data
