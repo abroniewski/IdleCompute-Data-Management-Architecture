@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 install-jdk = "*"
+jupyter = "*"
+pyarrow = "*"
+parquet-tools = "*"
+pandas = "*"
 
 [dev-packages]
 
