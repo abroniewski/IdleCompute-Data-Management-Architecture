@@ -51,7 +51,7 @@ def create_persistent_directory():
                 client.makedirs(f"{HDFS_DIR}/{metadata[0]}/{metadata[1]}", permission=None)
             if not os.path.exists(file_directory):  # creates the directory if it doesn't exist
                 os.makedirs(file_directory)
-            file_type = metadata[6] # will be passed as parameter to convert_to_parquet
+            file_type = metadata[5] # will be passed as parameter to convert_to_parquet
             persistent_file_location = f"{HDFS_DIR}/{metadata[0]}/{metadata[1]}"
             convert_to_parquet(file_type, TEMPORAL_DIR, filename, file_directory, new_filename)
             client.upload(persistent_file_location, f"{file_directory}/{new_filename}")
