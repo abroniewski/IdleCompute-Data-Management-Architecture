@@ -9,6 +9,8 @@ jupyter = "*"
 pyarrow = "*"
 parquet-tools = "*"
 pandas = "*"
+hdfs = "*"
+tqdm = "*"
 
 [dev-packages]
 
