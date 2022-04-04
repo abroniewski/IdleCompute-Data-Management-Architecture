@@ -128,4 +128,4 @@ Steps and commands for running the app will be included here
 
 [//]: # (HyperLinks)
 
-[license]: hhttps://github.com/abroniewski/IdleCompute-Data-Management-Architecture/LICENSE.md
+[license]: https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/LICENSE.md
