@@ -35,28 +35,38 @@ def convert_to_parquet(file_type, in_directory, in_filename, out_directory, out_
 
 
 # First we can strip primary metadata information from the filename as received from the website.
-# TODO: add instructions to setup file
-# TODO: add log
+# TODO: add log code for each LOG location below.
 def create_persistent_directory():
     hdfs_existing_directory_year = client.list(HDFS_DIR, status=False)
+    # LOG: Batch landing attempt timestamp
     for filename in tqdm(os.listdir(TEMPORAL_DIR)):  # iterate over all files in directory DIR
         if not filename.startswith('.'):  # do not process hidden files that start with "."
             metadata = re.split('[-.]', filename)  # splits the filename on '-' and '.' -> creates a list
-            file_directory = f"{CONVERTED_DIR}/{metadata[0]}/{metadata[1]}"  # uses YYYY/MM as the name of the sub-directory
+            file_directory = f"{CONVERTED_DIR}/{metadata[0]}/{metadata[1]}"  # uses YYYY/MM subdirectory name
             new_filename = f"{metadata[3]}-{metadata[4]}-{metadata[5]}"  # new file name will be userID-taskID
             if metadata[0] not in hdfs_existing_directory_year: # creates the directory if it doesn't exist. Check year
+                # LOG: New year + month directory creation attempt
                 client.makedirs(f"{HDFS_DIR}/{metadata[0]}/{metadata[1]}", permission=None)
+                # LOG: directory success + output directory created with client.resolve() command
             hdfs_existing_directory_month = client.list(f"{HDFS_DIR}/{metadata[0]}", status=False)
             if metadata[1] not in hdfs_existing_directory_month: # check if month exists
+                # LOG: New month directory creation attempt
                 client.makedirs(f"{HDFS_DIR}/{metadata[0]}/{metadata[1]}", permission=None)
+                # LOG: directory success + output directory created with client.resolve() command
             if not os.path.exists(file_directory):  # creates the directory if it doesn't exist
+                # LOG: temporal directory creation attempt
                 os.makedirs(file_directory)
-            file_type = metadata[5] # will be passed as parameter to convert_to_parquet
+                # LOG: directory success with actual dir created
+            file_type = metadata[6] # will be passed as parameter to convert_to_parquet
             persistent_file_location = f"{HDFS_DIR}/{metadata[0]}/{metadata[1]}"
             convert_to_parquet(file_type, TEMPORAL_DIR, filename, file_directory, new_filename)
-            client.upload(persistent_file_location, f"{file_directory}/{new_filename}")
-            client.upload(persistent_file_location, f"{TEMPORAL_DIR}/{filename}")
+            # LOG: file conversion success. From location, to location, file size
+            client.upload(persistent_file_location, f"{file_directory}/{new_filename}") # upload parquet
+            # LOG: parquet file upload success. From location, to location, file size
+            client.upload(persistent_file_location, f"{TEMPORAL_DIR}/{filename}") # upload original file
+            # LOG: original file upload success. From location, to location, file size
 
 
 if __name__ == '__main__':
     create_persistent_directory()
+    # LOG: Batch landing complete timestamp
