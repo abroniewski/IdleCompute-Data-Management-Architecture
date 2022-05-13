@@ -1,0 +1,121 @@
+# Setup multiple VMs to simulate IdleHosts
+#   INPUT: None
+#   OUTPUT:
+#       Static CSV file -> "idle-host-list.csv"
+#   SCOPE:
+#       Setup 10 VMs -> 1 master + 9 simulated IdleHosts
+#       Document setup steps in .txt file
+#       Store all VM location/access data required in CSV that will be used for access
+#           -> setup unique ID for VMs (used internally for scheduling)
+
+
+# Create IdleHost schedule file
+#   INPUT: None
+#   OUTPUT: 3 static CSV files -> "idle-host-schedule-YYYY-MM-DD-HH-MM.csv"
+#   SCOPE:
+#       Define Scheduling Inputs that get used to assign dataset + job to the correct workerNodes based on
+#       availability. These will be pre-generated CSV files that would be created by group2 scheduling work. They act
+#       as an input for the analysis process. We will create several of these files ahead of time and have a script
+#       that makes them available as a process inout for the MVP.
+#       Data to include:
+#           YYYY, MM, DD, UserID, TaskId, AnalysisType, IdleHostID, %workLoad for each node
+
+
+# Pull schedule file
+#   INPUT:
+#       "idle-host-schedule-YYYY-MM-DD-HH-MM.csv"
+#       "idle-host-list.csv"
+#   OUTPUT:
+#       pandas.dataframe -> current_job_schedule[columns = {userID-taskID, analysis_type, host_id, workload_fraction,
+#       last_update_timestamp, last_check_timestamp, status}]
+#   SCOPE:
+#       function that checks "/../data/scheduling" every 5min for a new "idle-host-schedule-YYYY-MM-DD-HH-MM.csv"
+#       file. Filename date is compared to last data added to schedule. If there is a new file, the file is opened
+#       and compared to the existing current_job_schedule dataframe. For each TaskID, if there is a change to the
+#       IdleHostID(s) or %workload, the dataframe is updated with the new info. The last_update_timestamp is updated
+#       with the timestamp of the schedule file.
+#           host_id -> list(string). id of VM completing analysis
+#           workload_fraction -> list(float). fraction number representing amount of work for each node
+#           last_update_timestamp -> datetime of last time changes were made to this line
+#           last_check_timestamp -> datetime of last time row was checked against schedule
+#           status -> string. Choose from "not_started", "in_progress", "scheduled", or "complete"
+
+
+# Host (VM) status call
+#   INPUT:
+#       pandas.dataframe -> current_job_schedule
+#   OUTPUT:
+#       dynamic CSV file -> "host-status.csv"
+#   SCOPE:
+#       Do a call/status check on the progress of all the VMs with current_job_schedule[status == in_progress].
+#       Get info from each VM on:
+#           - How many rows of data in each node?
+#           - How much time completed on each node?
+#           - How much time remaining?
+#           - How many nodes?
+#           - Estimate time to complete predictions based on different number of nodes
+
+
+# System Health and KPIs visualization update
+#   INPUT:
+#       dynamic CSV file -> "host-status.csv"
+#       pandas.dataframe -> current_job_schedule
+#       dynamic CSV file -> "historical-performance-YYYY-MM.csv"
+#   OUTPUT:
+#       data visualization tool is updated
+#   SCOPE:
+#       KPI visualizations are updated with current information for ongoing analysis and upcoming jobs
+#       Data to visualize includes everything in host (VM) status call + backlog and upcoming work visualization for
+#       all tasks in current_job_schedule[status == "not_started"]
+#       Visualize historical performance from "historical-performance-YYYY-MM.csv"
+
+
+# Define User Inputs for Data Analysis
+#   INPUT: None
+#   OUTPUT:
+#       Static CSV file -> "job_parameters.csv"
+#   SCOPE:
+#       CSV file that includes all parameters that can be used for analysis job. For the P2 MVP, these will be
+#       the parameters for Naive Bayes function.
+
+
+# Partition dataset or assign chunks based on schedule
+#   INPUT:
+#       pandas.dataframe -> current_job_schedule
+#       analysis job dataset
+#   OUTPUT:
+#       pandas.dataframe -> current_job_schedule updated
+#       EITHER updated dataset stored in /../data/processed/YYYY/MM/scheduled/IdleHostID
+#       OR return the parameters/variables needed to distributed Hadoop chunks
+#   SCOPE:
+#       For all jobs that are not started, check to see if the required hosts (VMs) are available. If all VMs are
+#       available:
+#       EITHER add key to each row of data based on number of nodes that will be used. Store dataset in scheduled
+#       OR see if we can set which location Hadoop sends its chunks to? Output would be a hadoop call/function
+#       update scheduled current_job_schedule[status == "scheduled"]
+
+
+# Initiate analysis jobs at hosts
+#   INPUT:
+#       called after partitioning/chunk assigning is complete
+#       pandas.dataframe -> current_job_schedule
+#       Static CSV file -> "job_parameters.csv"
+#       dynamic CSV file -> "host-status.csv"
+#   OUTPUT:
+#       pandas.dataframe -> current_job_schedule updated
+#       analysis jobs started
+#       analysis results/predictions stored in "/../data/processed/YYYY/MM/complete"
+#       pandas.dataframe -> past_job_performance updated
+#       dynamic CSV file -> "historical-performance-YYYY-MM.csv"
+#   SCOPE:
+#       For all jobs that are current_job_schedule[status == "scheduled"], launch the ML code to start the analytics
+#       jobs. Check the "job_parameters.csv" and call the correct algorithm, inputting the parameters from the CSV
+#       file for the job being completed.
+#       Connect to the VMs based on the given schedule and run the jobs in those locations using either Hash
+#       Partitioning or by calling the hadoop chunk location call/function created earlier.
+#       Store results or predictions.
+#       When analysis is complete, update:
+#           current_job_schedule[status == "complete"]
+#           current_job_schedule[last_update_timestamp]
+#       update "historical-performance-YYYY-MM.csv" with performance data from "host-status.csv"
+#       remove line item from "host-status.csv"
