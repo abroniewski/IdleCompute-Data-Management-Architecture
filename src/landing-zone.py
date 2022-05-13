@@ -1,4 +1,5 @@
 import os
+from os.path import join
 import re
 from pyarrow import json, csv
 import pyarrow.parquet as pq
@@ -19,7 +20,7 @@ def convert_to_parquet(file_type, in_directory, in_filename, out_directory, out_
     This function will take an input file in the form of CSV from a given directory,
     convert the file to a parquet, and place the file in a directory specified in parameters.
 
-    :param file_type:
+    :param file_type: extension, json or csv
     :param in_directory: directory where the CSV file exists
     :param in_filename: filename (including extension) that will be converted into parquet file
     :param out_directory: directory where the parquet file should be placed after conversion
@@ -34,7 +35,6 @@ def convert_to_parquet(file_type, in_directory, in_filename, out_directory, out_
         pq.write_table(table, f'{out_directory}/{out_filename}')
 
 
-# First we can strip primary metadata information from the filename as received from the website.
 # TODO: add log code for each LOG location below.
 def create_persistent_directory():
     hdfs_existing_directory_year = client.list(HDFS_DIR, status=False)
@@ -65,8 +65,14 @@ def create_persistent_directory():
             # LOG: parquet file upload success. From location, to location, file size
             client.upload(persistent_file_location, f"{TEMPORAL_DIR}/{filename}") # upload original file
             # LOG: original file upload success. From location, to location, file size
+            os.remove(join(TEMPORAL_DIR,filename))
 
+
+def delete_all_data_in_hdfs():
+    client.delete(HDFS_DIR)
+    client.makedirs(HDFS_DIR)
 
 if __name__ == '__main__':
+    delete_all_data_in_hdfs() # this function is included for testing
     create_persistent_directory()
     # LOG: Batch landing complete timestamp
