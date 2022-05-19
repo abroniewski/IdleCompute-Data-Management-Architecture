@@ -1,4 +1,4 @@
-# Setup multiple VMs to simulate IdleHosts
+# Setup multiple VMs to simulate IdleHosts (VLADA)
 #   INPUT: None
 #   OUTPUT:
 #       Static CSV file -> "idle-host-list.csv"
@@ -6,10 +6,20 @@
 #       Setup 10 VMs -> 1 master + 9 simulated IdleHosts
 #       Document setup steps in .txt file
 #       Store all VM location/access data required in CSV that will be used for access
-#           -> setup unique ID for VMs (used internally for scheduling)
+#           UniqueID is IP addresse
 
 
-# Create IdleHost schedule file
+# Configure Hadoop in MultiCluster (ADAM)
+#   INPUT: Multiple VMs setup
+#   OUTPUT:
+#       VMs have hadoop setup and can speak to each other
+#   SCOPE:
+#       Follow instructions here:
+#           https://kontext.tech/article/264/configure-hadoop-310-in-a-multi-node-cluster
+#           https://hadoop.apache.org/docs/r3.1.0/hadoop-project-dist/hadoop-common/ClusterSetup.html
+
+
+# Create IdleHost schedule file (ADAM)
 #   INPUT: None
 #   OUTPUT: 3 static CSV files -> "idle-host-schedule-YYYY-MM-DD-HH-MM.csv"
 #   SCOPE:
@@ -18,10 +28,10 @@
 #       as an input for the analysis process. We will create several of these files ahead of time and have a script
 #       that makes them available as a process inout for the MVP.
 #       Data to include:
-#           YYYY, MM, DD, UserID, TaskId, AnalysisType, IdleHostID, %workLoad for each node
+#           YYYY, MM, DD, UserID, TaskId, AnalysisType, IdleHostIP, %workLoad
 
 
-# Pull schedule file
+# Pull schedule file (ADAM)
 #   INPUT:
 #       "idle-host-schedule-YYYY-MM-DD-HH-MM.csv"
 #       "idle-host-list.csv"
@@ -41,7 +51,7 @@
 #           status -> string. Choose from "not_started", "in_progress", "scheduled", or "complete"
 
 
-# Host (VM) status call
+# Host (VM) status call (VLADA)
 #   INPUT:
 #       pandas.dataframe -> current_job_schedule
 #   OUTPUT:
@@ -56,13 +66,13 @@
 #           - Estimate time to complete predictions based on different number of nodes
 
 
-# System Health and KPIs visualization update
+# System Health and KPIs visualization update (VLADA)
 #   INPUT:
 #       dynamic CSV file -> "host-status.csv"
 #       pandas.dataframe -> current_job_schedule
 #       dynamic CSV file -> "historical-performance-YYYY-MM.csv"
 #   OUTPUT:
-#       data visualization tool is updated
+#       data visualization tool is updated (Tableau, Grafana)
 #   SCOPE:
 #       KPI visualizations are updated with current information for ongoing analysis and upcoming jobs
 #       Data to visualize includes everything in host (VM) status call + backlog and upcoming work visualization for
@@ -79,7 +89,7 @@
 #       the parameters for Naive Bayes function.
 
 
-# Partition dataset or assign chunks based on schedule
+# Partition dataset or assign chunks based on schedule (ADAM)
 #   INPUT:
 #       pandas.dataframe -> current_job_schedule
 #       analysis job dataset
@@ -93,6 +103,10 @@
 #       EITHER add key to each row of data based on number of nodes that will be used. Store dataset in scheduled
 #       OR see if we can set which location Hadoop sends its chunks to? Output would be a hadoop call/function
 #       update scheduled current_job_schedule[status == "scheduled"]
+
+# Note: he Name Node will replicate blocks to data nodes based upon rack configuration, replication factor and node availability, so even if you do managed to get a block on two particular data nodes, if one of those nodes goes down, the name node will replicate the block to another node.
+    Your requirement is also assuming a replication factor of 1, which doesn't give you any data redundancy (which is a bad thing if you lose a data node).
+    Let the namenode manage block assignments and use the balancer periodically if you want to keep your cluster evenly distibuted
 
 
 # Initiate analysis jobs at hosts
