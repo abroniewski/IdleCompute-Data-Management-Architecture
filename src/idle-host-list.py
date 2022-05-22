@@ -19,7 +19,7 @@ def virtual_machine_location():
                    'http://10.4.41.76:9870'],
             'User': 'bdm', 'Password' : 'asY76fkG12'}    
     df = pd.DataFrame(data)  
-    df.to_csv('/home/vladka/Downloads/BDMA/idle-host-list.csv',index=False)
+    df.to_csv('.../idle-host-list.csv',index=False)
     return("Ok")
 
 
