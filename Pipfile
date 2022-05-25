@@ -12,6 +12,7 @@ pandas = "*"
 hdfs = "*"
 tqdm = "*"
 pyspark = "*"
+datetime = "*"
 
 [dev-packages]
 
