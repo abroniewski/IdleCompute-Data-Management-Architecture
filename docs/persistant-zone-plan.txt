@@ -47,7 +47,6 @@
 #           host_id -> list(string). id of VM completing analysis
 #           workload_fraction -> list(float). fraction number representing amount of work for each node
 #           last_update_timestamp -> datetime of last time changes were made to this line
-#           last_check_timestamp -> datetime of last time row was checked against schedule
 #           status -> string. Choose from "not_started", "in_progress", "scheduled", or "complete"
 
 
@@ -104,7 +103,7 @@
 #       OR see if we can set which location Hadoop sends its chunks to? Output would be a hadoop call/function
 #       update scheduled current_job_schedule[status == "scheduled"]
 
-# Note: he Name Node will replicate blocks to data nodes based upon rack configuration, replication factor and node availability, so even if you do managed to get a block on two particular data nodes, if one of those nodes goes down, the name node will replicate the block to another node.
+# Note: The Name Node will replicate blocks to data nodes based upon rack configuration, replication factor and node availability, so even if you do managed to get a block on two particular data nodes, if one of those nodes goes down, the name node will replicate the block to another node.
     Your requirement is also assuming a replication factor of 1, which doesn't give you any data redundancy (which is a bad thing if you lose a data node).
     Let the namenode manage block assignments and use the balancer periodically if you want to keep your cluster evenly distibuted
 
