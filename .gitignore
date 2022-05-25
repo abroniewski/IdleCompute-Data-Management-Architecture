@@ -159,4 +159,5 @@ orleans.codegen.cs
 .localhistory/
 
 #raw and processed data files
-/data
+/data/processed
+/data/test-data
