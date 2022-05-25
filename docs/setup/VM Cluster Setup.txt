@@ -1,0 +1,47 @@
+VM Login
+
+Go to this site:
+https://upclink.upc.edu/vdesk/webtop.eui?webtop=/CommonWebtop_upclink.upc.edu&webtop_type=webtop_full
+
+Click on:
+VPN UPC Link
+Start the VPN
+
+Go to this site:
+https://virtech.fib.upc.edu/
+Open Nebula login with:
+	user: masterBD12
+	password: asY76fkG12
+
+Once in the dashboard, setup VM (press green +, name machine, keep default settings)
+	password: asY76fkG12
+
+In local terminal: to connect and interact with VM. ip address can be found in the OpenNebula dashboard. This will turn this instance of your local terminal into the VM terminal.
+Make sure the VM status is "running" in Open Nebula.
+We will setup 2 of the VMs in the instructions. We will need to do the same for all of the rest
+ssh bdm@host_ip_address
+
+	ssh bdm@10.4.41.37 
+	passowrd: bdm
+	ssh bdm@10.4.41.64
+	passowrd: asY76fkG12
+
+In terminal go to root directory
+	cd /etc
+	sudo vi hosts	-> the file is read only, so we need superuser permissions
+	i		-> this will enter insert mode in the "hosts" file
+	add the following two lines:
+10.4.41.64 hdp-master
+10.4.41.37 hdp-slave-1
+	press ESC and then :x to save the file
+	complete the same steps in the other VM
+
+
+If you have made changes and want to save the file, press :x (again you must not be in Insert mode. If you are, press ESC to leave it).
+If you haven't made any changes, press :q to leave the file (but you must not be in Insert mode).
+If you have made changes, but want to leave the file without saving the changes, press :q! (but you must not be in Insert mode).
+
+
+Host 192.168.*.*
+StrictHostKeyChecking=no
+UserKnownHostsFile=/dev/null
