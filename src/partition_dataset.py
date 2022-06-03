@@ -24,78 +24,60 @@
 from pyspark.sql import SparkSession
 from pyspark import SparkContext
 import pandas as pd
+from pyspark.sql.functions import udf
+from pyspark.rdd import portable_hash
 
 appName = "Scala Parquet Example"
 master = "local"
 
 spark = SparkSession.builder.appName(appName).master(master).getOrCreate()
 
+#%%
+import os
+
+cwd = os.getcwd()  # Get the current working directory (cwd)
+files = os.listdir(cwd)  # Get all the files in that directory
+files = os.listdir(cwd)
+print("Files in %r: %s" % (cwd, files))
 #%% load
 #TODO: iterate through folder structure to find file
-ip = [[37, 38, 39]]
-workload = [[20, 30, 50]]
+#TODO: Looks like python is not using the /src directory as current working directory??
+ip = [37, 38, 39]
+workload = [20, 30, 50]
 
-data_location = '../data/processed/2022/03/VKY001-001-AB12'
-schedule = pd.read_csv('../data/admin/schedule.csv')
+data_location = 'data/processed/2022/03/VKY001-001-AB12'
+schedule = pd.read_csv('data/admin/idle-host-schedule-2022-05-25-17-34.csv') #TODO: why not ../data???
 
-
-dataset = spark.read.parquet(data_location)
-
-# ip_assignment = workload[0][0]
-
-# rdd1 = spark.sparkContext.parallelize(dataset)
-# rdd2 = dataset.rdd.map(lambda x: )
-
-#%%
-# df1=dataset.rdd.zipWithIndex().toDF()
-# df2=df1.select(cols("_1.*"),cols("_2").alias('increasing_id'))
-# df1.show(1)
-# print("done")
-#%%
-nums = list(range(0,1000001))
-print(len(nums))
-nums_rdd = spark.sparkContext.parallelize(nums)
-squared_nums = nums_rdd.map(lambda x: x ** 2)
-print(nums_rdd)
-rdd_index = squared_nums.zipWithIndex()
-rdd_index.take(5)
 
 #%%
 ##########################
-###     Example of Key + MapReduce by Workload
+#     Parquet read and partition
 ##########################
-# row_count = dataset.count()
-nums = list(range(1,100))  # create dummy test set
-row_count = len(nums)  # save length of test set
-nums_rdd = spark.sparkContext.parallelize(nums)  #create RDD
+# Read Parquet file
+dataset_rdd = spark.read.parquet(data_location).rdd
+row_count = dataset_rdd.count()
 
-number_of_rows1 = 0.2*row_count  # splitting number of rows for each subset
-number_of_rows2 = 0.3*row_count
-number_of_rows3 = 0.5*row_count
+number_of_rows1 = int(0.2*row_count)  # splitting number of rows for each subset
+number_of_rows2 = int(0.3*row_count)
+number_of_rows3 = int(0.5*row_count)
 
-first_lower = 0  #determinging upper/loser boundaries for each section of work
-first_upper= first_lower + int(number_of_rows1) - 1
-second_lower = first_upper + 1
-second_upper = second_lower + int(number_of_rows2) - 1
-third_lower = second_upper + 1
-third_upper = row_count-1
-print(row_count)
-print ([first_lower,first_upper],[second_lower,second_upper],[third_lower,third_upper])
+# determining boundaries for each section of work
+second_lower = int(number_of_rows1)
+third_lower = second_lower + int(number_of_rows2)
 
-nums2 = nums_rdd.zipWithIndex()  # adding index to dataframe
-nums3 = nums2.map(lambda x: (x[1],x[0] ** 2))  # creating some visual difference between values and hey
-# TODO: There is a flaw in this logic, as only 1 and 2 are assigned to each row
-nums4 = nums3.map(lambda x: ((1 if x[0] < second_lower else (2 if (x[0] >= second_lower && x[0] < third_lower) else (3
-if x[0] >= third_lower else 4))),x[0],x[1]))  # logic to assign key.
-nums4.collect()  # show results
-# getPartition()  # will be called to send each row to different partition based on its key.
+dataset_rdd2 = dataset_rdd.zipWithIndex()  # adding index to dataframe
+dataset_rdd3 = dataset_rdd2.map(lambda x: (x[1], x[0]))  # creating key value pair
+dataset_rdd4 = dataset_rdd3.map(lambda x: ((1 if x[0] < second_lower else (2 if x[0] < third_lower else 3)), x[1]))
+
+column_names = ["key", "value"]
+dataset_df = dataset_rdd4.toDF(column_names)
+dataset_df.printSchema()
 
 #%%
-dataset_index = dataset.rdd.zipWithIndex()  # transform spark.DataFrame into RDD and add sequential index
-dataset_index2 = dataset_index.map(lambda x: (x[1],x[0]))  # flip the index and value to behave as key/value pair
-# dataset_index3 = dataset_index2.map(lambda x: (1 if x[1],x[0]))
-
-# map(lambda x: 'lower' if x < 3 else 'higher', lst)
+dataset_df.write.option("header",True) \
+        .partitionBy("key") \
+        .mode("overwrite") \
+        .parquet("data/tmp/test_output_parquet")
 
 #%%
 print("done")
