@@ -58,7 +58,8 @@ def create_persistent_directory():
             convert_to_parquet(file_type, TEMPORAL_DIR, filename, file_directory, new_filename)
             client.upload(persistent_file_location, f"{file_directory}/{new_filename}") # upload parquet
             client.upload(persistent_file_location, f"{TEMPORAL_DIR}/{filename}") # upload original file
-            os.remove(join(TEMPORAL_DIR,filename))
+            #TODO: Uncomment line below once in production
+            # os.remove(join(TEMPORAL_DIR,filename))
 
 
 def delete_all_data_in_hdfs():
