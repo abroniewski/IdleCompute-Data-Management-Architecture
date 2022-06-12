@@ -27,24 +27,24 @@ current_analytics_dataset = "2022/03/VKY001-002-AB12"
 
 
 ### ANALYTICS
+DATA_LOCATION = "../data/raw/2022-06-05-UCIHD-001-AB12.csv"
+analytics_save_location = "../data/analyzed/2022/06/UCIHD-001-AB12"
+
 spark = start_spark()
+
+columns = import_dataset_headers(
+    data_location=DATA_LOCATION)
 
 schema = define_dataset_schema(
     data_location=DATA_DIRECTORY,
-    dataset=current_analytics_dataset)
-
-DATA_LOCATION = "../data/raw/2022-06-05-UCIHD-001-AB12.csv"
-analytics_save_location = "../data/analyzed"
+    dataset=current_analytics_dataset,
+    data_type=None)
 
 df = read_dataset_for_analysis(
     spark_session = spark,
     data_location=DATA_LOCATION,
     schema=schema)
 
-columns = import_dataset_headers(
-    data_location=DATA_LOCATION)
-
-# TODO: create analyzed directory if not exsits
 generate_descriptive_analytics_files(
     columns=columns,
     analysis_dataframe=df,
@@ -56,12 +56,8 @@ train_data, test_data, feature_column = transform_data_to_target_schema(
 
 linearModel = integrate_parameters_and_build_LR_model(
     parameter_location="../data/test-data/parameters.csv",
-    training_data=train_data)
-
-# TODO: Nothing is being done with the coefficients
-coefficients = return_LR_model_parameters(
-    LR_model=linearModel,
-    features=feature_column)
+    training_data=train_data,
+    analytics_save_location=analytics_save_location)
 
 validate_LR_model(
     LR_model=linearModel,
@@ -69,5 +65,3 @@ validate_LR_model(
 
 stop_spark(
     spark_session=spark)
-
-exit()
