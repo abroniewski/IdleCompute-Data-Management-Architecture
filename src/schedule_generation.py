@@ -36,7 +36,8 @@ def create_dummy_schedule():
     dataset = {"yyyy": yyyy, "mm": mm, "user_id": user_id, "task_id": task_id,
                "analysis_type": analysis_type,
                "idlehost_ip": idlehost_ip,
-               "workload": workload}
+               "workload": workload,
+               "status": status}
 
     schedule = pd.DataFrame(data=dataset)
     print(schedule.columns)
