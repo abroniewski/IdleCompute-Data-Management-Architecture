@@ -56,6 +56,7 @@
 #   OUTPUT:
 #       dynamic CSV file -> "host-status.csv"
 #   SCOPE:
+#       Try to get any statistics possible using Hadoop
 #       Do a call/status check on the progress of all the VMs with current_job_schedule[status == in_progress].
 #       Get info from each VM on:
 #           - How many rows of data in each node?
