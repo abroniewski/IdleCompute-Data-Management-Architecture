@@ -1,0 +1,2 @@
+,name,modelerType,TotalCapacity,MemoryUsed,Count,Name,ObjectName
+0,"java.nio:type=BufferPool,name=mapped",sun.management.ManagementFactoryHelper$1,0.0,0.0,0.0,mapped,"java.nio:type=BufferPool,name=mapped"

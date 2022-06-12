@@ -1,0 +1,2 @@
+,name,modelerType,OpenFileDescriptorCount,MaxFileDescriptorCount,CommittedVirtualMemorySize,TotalSwapSpaceSize,FreeSwapSpaceSize,ProcessCpuTime,FreePhysicalMemorySize,TotalPhysicalMemorySize,SystemCpuLoad,ProcessCpuLoad,Arch,SystemLoadAverage,AvailableProcessors,Version,Name,ObjectName
+0,java.lang:type=OperatingSystem,sun.management.OperatingSystemImpl,300.0,1048576.0,3880484864.0,4136628224.0,4136628224.0,153980000000.0,2645975040.0,4136636416.0,0.033704105191210004,0.0020286439573070003,amd64,0.0,1.0,4.15.0-65-generic,Linux,java.lang:type=OperatingSystem

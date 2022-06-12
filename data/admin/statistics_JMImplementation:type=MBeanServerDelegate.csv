@@ -1,0 +1,2 @@
+,name,modelerType,MBeanServerId,SpecificationName,SpecificationVersion,SpecificationVendor,ImplementationName,ImplementationVersion,ImplementationVendor
+0,JMImplementation:type=MBeanServerDelegate,javax.management.MBeanServerDelegate,cloyster.fib.upc.es_1654955903046,Java Management Extensions,1.4,Oracle Corporation,JMX,1.8.0_222-8u222-b10-1ubuntu1~18.04.1-b10,Oracle Corporation

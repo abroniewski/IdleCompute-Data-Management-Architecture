@@ -1,0 +1,2 @@
+,name,modelerType,Valid,Usage,PeakUsage,MemoryManagerNames,UsageThreshold,UsageThresholdExceeded,UsageThresholdCount,UsageThresholdSupported,CollectionUsage,CollectionUsageThresholdSupported,Name,Type,ObjectName
+0,"java.lang:type=MemoryPool,name=Compressed Class Space",sun.management.MemoryPoolImpl,1.0,"{'committed': 5767168, 'init': 0, 'max': 1073741824, 'used': 5481128}","{'committed': 5767168, 'init': 0, 'max': 1073741824, 'used': 5481128}",['Metaspace Manager'],0.0,0.0,0.0,1.0,,0.0,Compressed Class Space,NON_HEAP,"java.lang:type=MemoryPool,name=Compressed Class Space"

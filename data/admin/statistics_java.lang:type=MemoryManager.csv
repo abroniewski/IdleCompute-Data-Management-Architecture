@@ -1,0 +1,2 @@
+,name,modelerType,Valid,MemoryPoolNames,Name,ObjectName
+0,"java.lang:type=MemoryManager,name=Metaspace Manager",sun.management.MemoryManagerImpl,1.0,"['Metaspace', 'Compressed Class Space']",Metaspace Manager,"java.lang:type=MemoryManager,name=Metaspace Manager"

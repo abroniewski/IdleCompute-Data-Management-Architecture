@@ -1,0 +1,2 @@
+,name,modelerType,ObjectPendingFinalizationCount,HeapMemoryUsage,NonHeapMemoryUsage,Verbose,ObjectName
+0,java.lang:type=Memory,sun.management.MemoryImpl,0.0,"{'committed': 97251328, 'init': 65011712, 'max': 2027290624, 'used': 52210608}","{'committed': 74252288, 'init': 2555904, 'max': -1, 'used': 72621616}",0.0,java.lang:type=Memory
