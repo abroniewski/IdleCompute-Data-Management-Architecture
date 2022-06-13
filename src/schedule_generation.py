@@ -24,10 +24,10 @@ def create_dummy_schedule():
     #   |   39  |   -original dataset row-  |
     #   |   39  |   -original dataset row-  |
     #   |   39  |   -original dataset row-  |
-    yyyy = [2019, 2020, 2021, 2021, 2022, 2022, 2022, 2022, 2022]  # year directory where unprocessed data exists
-    mm = [7, 12, 2, 4, 3, 3, 3, 3, 6]  # month directory
+    yyyy = ["2019", "2020", "2021", "2021", "2022", "2022", "2022", "2022", "2022"]  # year directory where unprocessed data exists
+    mm = ["07", "12", "02", "04", "03", "03", "03", "03", "06"]  # month directory
     user_id = ["ABR001", "ABR001", "ABR001", "VKY001", "VKY001", "VKY001", "VKY001", "ABR001", "VKY001"]
-    task_id = [2, 2, 5, 1, 1, 2, 3, 2, 1]
+    task_id = ["002", "002", "005", "001", "001", "002", "003", "002", "001"]
     analysis_type = ["AB12", "AB12", "AB12", "AB12", "AB12", "AB12", "AB12", "AB12", "AB12"]
     idlehost_ip = [["10.4.41.64", "10.4.41.38", "10.4.41.39"],
                     ["10.4.41.37", "10.4.41.39"],
@@ -65,8 +65,8 @@ def create_dummy_schedule():
     pd.DataFrame(data=schedule).to_csv('../data/admin/schedule.csv', index=False)
 
 def create_workload():
-    data = [["2020/12/ABR001/02/AB12", 50, "10.4.41.37"],
-            ["2020/12/ABR001/02/AB12", 50, "10.4.41.39"]]
+    data = [["2020/12/ABR001/02/AB12", "50", "10.4.41.37"],
+            ["2020/12/ABR001/02/AB12", "50", "10.4.41.39"]]
 
     df = pd.DataFrame(data)
 

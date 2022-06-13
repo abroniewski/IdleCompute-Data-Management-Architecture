@@ -24,7 +24,7 @@ import pandas as pd
 import re
 
 
-#TODO: iterate through folder structure to find file
+# need to add generic iteration through next_file_dir folder structure to find info
 def retrieve_IP_and_partition_size(data_location):
         ip = [37, 38, 39]
         workload_distribution = [20, 30, 50]
@@ -44,12 +44,7 @@ def partition_output_directory(partitioned_directory, file_location):
 ##########################
 # Read Parquet file
 def read_parquet_dataset_for_partition(spark_session, data_location):
-    # df = spark_session.read.csv(path=data_location, schema=schema, header=True)
     df = spark_session.read.parquet(data_location)
-    # dataset_rdd2 = dataset_rdd.map(lambda x: (x[1]))
-    # df = dataset_rdd2.map(lambda x: (x,)).toDF()
-    # df = dataset_rdd2.toDF()
-    df.show()
     print(f"Parquet data loaded from {data_location}")
     return df
 
@@ -60,12 +55,11 @@ def read_csv_dataset_for_partition(spark_session, data_location, schema):
     return df
 
 
-# TODO: iterate through ip and workload
+# iterate through ip and workload
 def partition_scheduled_dataset(dataset_rdd, idlehost_ip, workload, output_directory):
-        # dataset_rdd = spark.read.parquet(file_location).rdd
         row_count = dataset_rdd.count()
 
-        # TODO: Iterate through workload and create boundaaries regardless of how many nodes we have
+        # Iterate through workload and create boundaries regardless of how many nodes we have
         number_of_rows1 = int(0.2*row_count)  # splitting number of rows for each subset
         number_of_rows2 = int(0.3*row_count)
 
@@ -73,7 +67,7 @@ def partition_scheduled_dataset(dataset_rdd, idlehost_ip, workload, output_direc
         second_lower = int(number_of_rows1)
         third_lower = second_lower + int(number_of_rows2)
 
-        # TODO: create partitions regardless of how many nodes are being used
+        # create partitions regardless of how many nodes are being used
         # adding index to dataframe and creating key value pair based on workload %
         dataset_rdd2 = dataset_rdd.zipWithIndex()
         dataset_rdd3 = dataset_rdd2.map(lambda x: (x[1], x[0]))
@@ -84,23 +78,7 @@ def partition_scheduled_dataset(dataset_rdd, idlehost_ip, workload, output_direc
         column_names = ["key", "value"]
         dataset_df = dataset_rdd4.toDF(column_names)
 
-        # output_location = partition_output_directory(partitioned_directory=output_directory,
-        #                                              file_location=file_location)
-
         dataset_df.write.option("header",True) \
                 .partitionBy("key") \
                 .mode("overwrite") \
                 .parquet(output_directory)
-
-
-def get_IP_from_schedule(schedule: pd.DataFrame):
-        """
-        Get IP addresse from schedule CSV
-        :return:
-        """
-
-def get_workload_from_schedule():
-        """
-        Get workload % from schedule corresponding to each IP address.
-        :return:
-        """

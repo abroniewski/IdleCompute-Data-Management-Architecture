@@ -1,35 +1,14 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import pandas as pd
+import os
 
 
-# In[ ]:
+def machine_in_progress_list(admin_file_directory):
+    schedule = pd.read_csv(os.path.join(admin_file_directory, "schedule.csv"))
+    next_machine = []
+    for task in schedule.iterrows():
+       if task[1]["status"]=="in_progress":
+           next_machine = f"{task[1]['yyyy']}/{task[1]['mm']}/{task[1]['user_id']}-00{task[1]['task_id']}" \
+                          f"-{task[1]['analysis_type']}"
+    return next_machine
 
-
-def machine_in_progress_list():
-    file_path = '../data/admin/'
-    schedule = pd.read_csv(f"{file_path}schedule.csv")
-    
-    machine_in_progress = []
-    task_in_progress_indexes = [n for n,x in enumerate(schedule['status']) if x=='in_progress']
-    for k in task_in_progress_indexes:
-        machines = schedule['idlehost_ip'][k].replace('[',' ').replace(']',' ').replace(',',' ').split()
-
-        for t in machines:
-            machine_in_progress.append(t)
-    machine_in_progress = list(dict.fromkeys(machine_in_progress))
-    df = pd.DataFrame(columns=['IP'])
-    df['IP'] = machine_in_progress
-    
-    df.to_csv(f'{file_path}machine_in_progress.csv', index=True)
-
-
-# In[ ]:
-
-
-machine_in_progress_list()
 

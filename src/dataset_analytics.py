@@ -180,7 +180,8 @@ def integrate_parameters_and_build_LR_model(parameter_location, training_data, a
     print("Linear regression model trained")
 
     model_file_path = os.path.join(analytics_save_location, "model/LR_model")
-    shutil.rmtree(model_file_path)  # remove existing model if code re-run
+    if os.path.exists(model_file_path):
+        shutil.rmtree(model_file_path)  # remove existing model if code re-run
     linearModel.save(model_file_path)
     print(f"Linear regression model saved to: {model_file_path}")
 
@@ -207,12 +208,6 @@ def validate_LR_model(LR_model, testing_data, analytics_save_location):
 
     metrics_file_path = os.path.join(analytics_save_location, "LR_model_accuracy.csv")
     summary.to_csv(metrics_file_path, index=False, header=None)
-
-    print("\nSummary Stats")
-    print("meanAbsoluteError = %s" % meanAbsoluteError)
-    print("meanSquaredError = %s" % meanSquaredError)
-    print("rootMeanSquaredError = %s" % rootMeanSquaredError)
-    print("r2 = %s" % r2)
 
     print("Validation data exported.")
 
