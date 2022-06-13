@@ -1,20 +1,39 @@
-# from idle_host_list import *
-# from partition_dataset import *
+#%% from idle_host_list import *
+from partition_dataset import *
 from dataset_analytics import *
+
 
 DATA_DIRECTORY = "../data/processed/"
 FORMATTED_DIRECTORY = "../data/partitioned"
 ANALYZED_DIRECTORY = "../data/analyzed"
 current_analytics_dataset = "2022/03/VKY001-002-AB12"
 
+
+TEMPORAL_DIR = '../data/raw'
+CONVERTED_DIR = '../data/processedTemp'
+HDFS_DIR = DATA_DIRECTORY
+
+DATA_LOCATION = "../data/raw/2022-06-05-UCIHD-001-AB12.csv"
+analytics_save_location = "../data/analyzed/2022/06/UCIHD-001-AB12"
+
+spark = start_spark()
+
 # cluster_slave_ip, workload_distribution = retrieve_IP_and_partition_size(
 #     data_location=DATA_DIRECTORY)
 
-# partition_scheduled_dataset(
-#     file_location=data_location,
-#     idlehost_ip=cluster_slave_ip,
-#     workload=workload_distribution,
-#     output_directory="data/partitioned")
+next_file = os.path.join(DATA_DIRECTORY, "2022/06")
+data_rdd = read_parquet_dataset_for_partition(
+    spark_session=spark,
+    data_location=next_file).rdd
+
+#%%
+
+output_file = os.path.join(FORMATTED_DIRECTORY, "2022/06")
+partition_scheduled_dataset(
+    dataset_rdd=data_rdd,
+    idlehost_ip=None,
+    workload=None,
+    output_directory=output_file)
 
 ### This code would be used if we are running everything from VM cluster
 # data_location = 'data/processed/2022/03/VKY001-002-AB12'
@@ -27,10 +46,7 @@ current_analytics_dataset = "2022/03/VKY001-002-AB12"
 
 
 ### ANALYTICS
-DATA_LOCATION = "../data/raw/2022-06-05-UCIHD-001-AB12.csv"
-analytics_save_location = "../data/analyzed/2022/06/UCIHD-001-AB12"
 
-spark = start_spark()
 
 columns = import_dataset_headers(
     data_location=DATA_LOCATION)
@@ -40,10 +56,14 @@ schema = define_dataset_schema(
     dataset=current_analytics_dataset,
     data_type=None)
 
-df = read_dataset_for_analysis(
-    spark_session = spark,
-    data_location=DATA_LOCATION,
-    schema=schema)
+# df = read_dataset_for_analysis(
+#     spark_session = spark,
+#     data_location=DATA_LOCATION,
+#     schema=schema)
+
+df = read_parquet_dataset_for_analysis(
+    spark_session=spark,
+    data_location=output_file)
 
 generate_descriptive_analytics_files(
     columns=columns,
