@@ -1,0 +1,2 @@
+regParam,solver,weightCol,maxIter,elasticNetParam,standardization,tol,fitIntercept,aggregationDepth,loss,epsilon
+0.0,normal,None,100,0.8,False,1e-06,True,2,squaredError,1.35

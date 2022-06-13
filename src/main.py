@@ -52,7 +52,7 @@ partition_scheduled_dataset(
 ### ANALYTICS
 # reading in the column names from a metadata file (provided by user)
 columns = import_dataset_headers(
-    data_location="../data/raw/2022-06-05-UCIHD-001-AB12.csv")
+    admin_dir=ADMIN_DIRECTORY)
 
 # read parquet file from partitioned dataset stored in FORMATTED directory
 df = read_parquet_dataset_for_analysis(
@@ -76,7 +76,7 @@ train_data, test_data, feature_column = transform_data_to_target_schema(
 # depending on the type of analytics that are requested by the user
 # model is written to analyzed directory
 linearModel = integrate_parameters_and_build_LR_model(
-    parameter_location="../data/test-data/parameters.csv",
+    parameter_location=os.path.join(ADMIN_DIRECTORY, "parameters.csv"),
     training_data=train_data,
     analytics_save_location=analytics_save_location)
 

@@ -21,15 +21,14 @@ def start_spark():
 
     spark = SparkSession.builder.appName(appName).master(master).getOrCreate()
     sc = spark.sparkContext
-    # sc.setLogLevel("OFF")
     sqlContext = SQLContext(spark.sparkContext)
     print("SparkSession initialized")
     return spark
 
 
 # TODO: Quality Check -> Do the names of the columns align?
-def import_dataset_headers(data_location):
-    headers = pd.read_csv("../data/test-data/headers.csv", header=None, names=["column_name"])
+def import_dataset_headers(admin_dir):
+    headers = pd.read_csv(os.path.join(admin_dir, "headers.csv"), header=None, names=["column_name"])
     columns = headers["column_name"].values.tolist()
 
     return columns
@@ -66,17 +65,12 @@ def read_dataset_for_analysis(spark_session, data_location, schema):
 
 
 def read_parquet_dataset_for_analysis(spark_session, data_location):
-    # df = spark_session.read.csv(path=data_location, schema=schema, header=True)
     df = spark_session.read.parquet(data_location)
     dataset_rdd = df.rdd.map(lambda x: (x[0]))
-    # df = dataset_rdd.map(lambda x: (x,)).toDF()
     df = dataset_rdd.toDF()
-    # df = dataset_rdd2.toDF()
 
     print(f"Parquet data loaded from {data_location}")
     return df
-
-    # data_location = 'data/partitioned/2022/03/VKY001-002-AB12'
 
 
 def generate_descriptive_analytics_files(columns, analysis_dataframe, analytics_save_location):
@@ -209,8 +203,9 @@ def validate_LR_model(LR_model, testing_data, analytics_save_location):
     metrics_file_path = os.path.join(analytics_save_location, "LR_model_accuracy.csv")
     summary.to_csv(metrics_file_path, index=False, header=None)
 
-    print("Validation data exported.")
+    print("Validation data exported")
+
 
 def stop_spark(spark_session):
     spark_session.stop()
-    print("spark session ended")
+    print("\n***Spark session ended***")
