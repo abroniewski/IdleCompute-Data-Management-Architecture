@@ -1,4 +1,4 @@
-#%% from idle_host_list import *
+# from idle_host_list import *
 from partition_dataset import *
 from dataset_analytics import *
 
@@ -26,7 +26,15 @@ data_rdd = read_parquet_dataset_for_partition(
     spark_session=spark,
     data_location=next_file).rdd
 
-#%%
+schema = define_dataset_schema(
+    data_location=DATA_DIRECTORY,
+    dataset=current_analytics_dataset,
+    data_type=None)
+
+# data_rdd = read_csv_dataset_for_partition(
+#     spark_session=spark,
+#     data_location=os.path.join(next_file, "UCIHD-001-AB12.csv"),
+#     schema=schema).rdd
 
 output_file = os.path.join(FORMATTED_DIRECTORY, "2022/06")
 partition_scheduled_dataset(
@@ -47,14 +55,8 @@ partition_scheduled_dataset(
 
 ### ANALYTICS
 
-
 columns = import_dataset_headers(
     data_location=DATA_LOCATION)
-
-schema = define_dataset_schema(
-    data_location=DATA_DIRECTORY,
-    dataset=current_analytics_dataset,
-    data_type=None)
 
 # df = read_dataset_for_analysis(
 #     spark_session = spark,
@@ -81,7 +83,8 @@ linearModel = integrate_parameters_and_build_LR_model(
 
 validate_LR_model(
     LR_model=linearModel,
-    testing_data=test_data)
+    testing_data=test_data,
+    analytics_save_location=analytics_save_location)
 
 stop_spark(
     spark_session=spark)

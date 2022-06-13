@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession, SQLContext
 from pyspark.sql.types import *
 from pyspark.ml.feature import VectorAssembler, StandardScaler
 from pyspark.ml.regression import LinearRegression
-from pyspark.mllib.evaluation import MulticlassMetrics
+from pyspark.mllib.evaluation import RegressionMetrics
 
 import handyspark
 
@@ -68,10 +68,11 @@ def read_dataset_for_analysis(spark_session, data_location, schema):
 def read_parquet_dataset_for_analysis(spark_session, data_location):
     # df = spark_session.read.csv(path=data_location, schema=schema, header=True)
     df = spark_session.read.parquet(data_location)
-    # dataset_rdd2 = dataset_rdd.map(lambda x: (x[1]))
-    # df = dataset_rdd2.map(lambda x: (x,)).toDF()
+    dataset_rdd = df.rdd.map(lambda x: (x[0]))
+    # df = dataset_rdd.map(lambda x: (x,)).toDF()
+    df = dataset_rdd.toDF()
     # df = dataset_rdd2.toDF()
-    df = df[1]
+
     print(f"Parquet data loaded from {data_location}")
     return df
 
@@ -186,21 +187,32 @@ def integrate_parameters_and_build_LR_model(parameter_location, training_data, a
     return linearModel
 
 
-def validate_LR_model(LR_model, testing_data):
+def validate_LR_model(LR_model, testing_data, analytics_save_location):
     predictions = LR_model.transform(testing_data)
 
     predandlabels = predictions.select("newPrediction", "target")
     predandlabels_RDD = predandlabels.rdd
+    predandlabels_RDD2 = predandlabels_RDD.map(lambda x: (x[0], float(x[1])))  #convert filetype from double to float
 
-    metrics = MulticlassMetrics(predandlabels_RDD)
+    metrics = RegressionMetrics(predandlabels_RDD2)
 
-    precision = metrics.precision(1.0)
-    recall = metrics.recall(1.0)
-    f1Score = metrics.fMeasure(1.0)
+    meanAbsoluteError = metrics.meanAbsoluteError
+    meanSquaredError = metrics.meanSquaredError
+    rootMeanSquaredError = metrics.rootMeanSquaredError
+    r2 = metrics.r2
+
+    summary_headers = ["meanAbsoluteError", "meanSquaredError", "rootMeanSquaredError", "r2"]
+    summary_stats = [meanAbsoluteError, meanSquaredError, rootMeanSquaredError, r2]
+    summary = pd.DataFrame(list(zip(summary_headers, summary_stats)))
+
+    metrics_file_path = os.path.join(analytics_save_location, "LR_model_accuracy.csv")
+    summary.to_csv(metrics_file_path, index=False, header=None)
+
     print("\nSummary Stats")
-    print("Precision = %s" % precision)
-    print("Recall = %s" % recall)
-    print("F1 Score = %s" % f1Score)
+    print("meanAbsoluteError = %s" % meanAbsoluteError)
+    print("meanSquaredError = %s" % meanSquaredError)
+    print("rootMeanSquaredError = %s" % rootMeanSquaredError)
+    print("r2 = %s" % r2)
 
     print("Validation data exported.")
 
