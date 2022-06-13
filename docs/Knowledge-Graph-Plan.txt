@@ -1,0 +1,133 @@
+task_user.csv
+'''
+List of tasks and the user that submitted task.
+task_id is unique
+Create list of X UserIDs to choose from, and have the same X users submit the different tasks
+'''
+task_id, user_id
+T1, U1
+T2, U1
+T3, U2
+T4, U2
+T5, U3
+
+
+
+task_type.csv
+'''
+describes what time of analytics is being completed on each task.
+assign A1-A5 for each task
+'''
+task_id, type_id
+T1, A1
+T2, A2
+T3, A3
+T4, A4
+T5, A5
+
+
+
+analysis_type.csv
+'''
+this describes what different types of analysis will take place on 
+NOTE: we can probably NOT include this CSV if things are taking lots of time
+'''
+type_id, analysis_name
+A1, "XGBoost"
+A2, "Linear Regression"
+A3, "Random Forest"
+A4, "Decision Tree"
+A5, "SVC"
+
+
+
+task_submission-date.csv
+'''
+date when a task was submitted for completion.
+No leading 0's on any numbers
+month is 1-12, day is 1-28, year is 2021-2022
+'''
+task_id, year_submitted, month_submitted, day_submitted
+T1, 2021, 3, 14
+T2, 2022, 5, 15
+T3, 2022, 12, 1
+T4, 2021, 3, 2
+T5, 2022, 5, 6
+
+
+
+resource_type.csv
+'''
+information describing each type of resource (GPU, CPU)
+IF POSSIBLE -> include more CPU resources than GPU resources
+'''
+resource_id, resource_type
+R1, CPU
+R2, GPU
+R3, GPU
+R4, CPU
+R5, CPU
+
+
+
+resource_IP.csv
+'''
+provides IP address of each IdleHost
+NOTE: we can probably NOT include this CSV if things are taking lots of time
+'''
+R1, "10.4.41.64"
+R2, "10.4.41.65"
+R3, "10.4.41.66"
+R4, "10.4.41.67"
+R5, "10.4.41.68"
+
+
+
+user_info.csv
+'''
+information about the user submitting a task
+assign either UPC or ULB to each user
+NOTE: we can probably NOT include this CSV if things are taking lots of time
+'''
+user_id, organization
+U1, "Universidad Politécnica de Catalunya"
+U2, "Universidad Politécnica de Catalunya"
+U3, "Universidad Politécnica de Catalunya"
+U4, "Universite Libre de Bruxelles"
+U5, "Universite Libre de Bruxelles"
+
+
+
+task_resource.csv
+'''
+resources assigned to complete tasks
+Each row represents a single relationship between task and resource
+Use a random number of resources to complete each task 
+IF POSSIBLE -> have 1 or 2 of the resources appear more frequently than others
+'''
+task_id, resource_id
+T1, R1
+T1, R2
+T1, R3
+T2, R2
+T2, R6
+T3, R3
+T3, R6
+T4, R1
+T5, R2
+T5, R5
+
+
+
+task_schedule-date.csv
+'''
+date and time when task is scheduled to be started
+hour_scheduled is a number between 0-23, month is 1-12, day is 1-28, year is 2021-2023
+IF POSSIBLE -> make scheduled time some random amount AFTER the submitted time?
+'''
+task_id, year_scheduled, month_scheduled, day_scheduled, hour_scheduled
+T1, 2021, 3, 14, 0
+T2, 2022, 5, 15, 5
+T3, 2022, 12, 1, 14
+T4, 2021, 3, 2, 16
+T5, 2022, 5, 6, 23

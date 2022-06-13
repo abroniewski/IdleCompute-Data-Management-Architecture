@@ -1,0 +1,50 @@
+VM Login
+
+Go to this site:
+https://upclink.upc.edu/vdesk/webtop.eui?webtop=/CommonWebtop_upclink.upc.edu&webtop_type=webtop_full
+
+Click on:
+VPN UPC Link
+Start the VPN
+
+Go to this site:
+https://virtech.fib.upc.edu
+Open Nebula login with:
+	user: masterBD12
+	password: asY76fkG12
+
+Once in the dashboard, setup VM (press green +, name machine, keep default settings)
+	password: bdm
+
+In local terminal: to connect and interact with VM. ip address can be found in the OpenNebula dashboard. This will turn this instance of your local terminal into the VM terminal.
+Make sure the VM status is "running" in Open Nebula.
+ssh bdm@host_ip_address
+
+	ssh bdm@10.4.41.37 
+	passowrd: bdm
+
+In VM terminal: Start HDFS
+	/home/bdm/BDM_Software/hadoop/sbin/start-dfs.sh
+
+In local internet browser: Check HDFS status in browser (safari)
+	http://10.4.41.37:9870
+
+In VM terminal: Create HDFS directory. These commands go into your VM terminal
+	~/BDM_Software/hadoop/bin/hdfs dfs -mkdir /user
+	~/BDM_Software/hadoop/bin/hdfs dfs -mkdir /user/bdm
+	~/BDM_Software/hadoop/bin/hdfs dfs -chmod -R 777 /user/bdm/
+
+In VM terminal: map the HDFS directory to bash so that you can run commands using just "hdfs" instead of the whole directory
+	echo 'export PATH="$PATH:~/BDM_Software/hadoop/bin"' >> ~/.bashrc && . ~/.bashrc
+
+In Python: import the following library
+	from hdfs import InsecureClient
+
+In Python: Create a connection variable to HDFS. The IP will vary depending on your VM.
+	client = InsecureClient('http://10.4.41.37:9870', user='bdm')
+
+In Python: Upload file from local to VM. The '.' represents your user/bdm HDFS directory.
+	client.upload('.', '../data/processed/[filename]')
+
+In VM Terminal: Check to see if you file got moved
+	~/BDM_Software/hadoop/bin/hdfs dfs -ls /user/bdm

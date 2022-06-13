@@ -1,0 +1,11 @@
+Id,Name,IP,User,Password
+1,VM_Master,http://10.4.41.64:9870,bdm,asY76fkG12
+2,VM_Worker1,http://10.4.41.54:9870,bdm,asY76fkG12
+3,VM_Worker2,http://10.4.41.49:9870,bdm,asY76fkG12
+4,VM_Worker3,http://10.4.41.59:9870,bdm,asY76fkG12
+5,VM_Worker4,http://10.4.41.63:9870,bdm,asY76fkG12
+6,VM_Worker5,http://10.4.41.68:9870,bdm,asY76fkG12
+7,VM_Worker6,http://10.4.41.69:9870,bdm,asY76fkG12
+8,VM_Worker7,http://10.4.41.72:9870,bdm,asY76fkG12
+9,VM_Worker8,http://10.4.41.74:9870,bdm,asY76fkG12
+10,VM_Worker9,http://10.4.41.76:9870,bdm,asY76fkG12
