@@ -38,6 +38,7 @@ def partition_output_directory(partitioned_directory, file_location):
         file_directory = f"{partitioned_directory}/{metadata[2]}/{metadata[3]}/{metadata[4]}"  # uses YYYY/MM subdirectory name
         return file_directory
 
+
 ##########################
 #     Parquet read and partition
 ##########################
@@ -48,10 +49,16 @@ def read_parquet_dataset_for_partition(spark_session, data_location):
     # dataset_rdd2 = dataset_rdd.map(lambda x: (x[1]))
     # df = dataset_rdd2.map(lambda x: (x,)).toDF()
     # df = dataset_rdd2.toDF()
-    df = df[1]
     df.show()
     print(f"Parquet data loaded from {data_location}")
     return df
+
+
+def read_csv_dataset_for_partition(spark_session, data_location, schema):
+    df = spark_session.read.csv(path=data_location, schema=schema, header=True)
+    print(f"CSV data loaded from {data_location}")
+    return df
+
 
 # TODO: iterate through ip and workload
 def partition_scheduled_dataset(dataset_rdd, idlehost_ip, workload, output_directory):
