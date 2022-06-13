@@ -68,6 +68,10 @@ def read_dataset_for_analysis(spark_session, data_location, schema):
 def read_parquet_dataset_for_analysis(spark_session, data_location):
     # df = spark_session.read.csv(path=data_location, schema=schema, header=True)
     df = spark_session.read.parquet(data_location)
+    # dataset_rdd2 = dataset_rdd.map(lambda x: (x[1]))
+    # df = dataset_rdd2.map(lambda x: (x,)).toDF()
+    # df = dataset_rdd2.toDF()
+    df = df[1]
     print(f"Parquet data loaded from {data_location}")
     return df
 
