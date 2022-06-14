@@ -161,3 +161,5 @@ orleans.codegen.cs
 #raw and processed data files
 /data/processed
 /data/test-data
+/data/partitioned
+/data/analyzed
