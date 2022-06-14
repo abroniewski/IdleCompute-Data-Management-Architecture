@@ -49,7 +49,7 @@ The project is small and will follow the structure below:
 2. install dependencies using pipfile
 3. run main.py. 
 
-This will use the data provided in [data/raw](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/data/raw) data/raw and run through the full data pipeline from landing zone, formatted zone and exploitation.
+This will use the data provided in [data/raw](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/data/raw) and run through the full data pipeline from landing zone, formatted zone and exploitation.
 
 ### Tools Required
 
