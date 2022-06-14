@@ -31,13 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/data/admin/files_statistics.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/data/admin/headers.csv">
           <value>
             <Attribute>
@@ -66,13 +59,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/data/admin/machine_in_progresse.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/data/admin/parameters.csv">
           <value>
             <Attribute>
@@ -87,111 +73,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/data/admin/statistics_Hadoop:service=NameNode.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_JMImplementation:type=MBeanServerDelegate.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_com.sun.management:type=DiagnosticCommand.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_com.sun.management:type=HotSpotDiagnostic.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=ClassLoading.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=Compilation.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=GarbageCollector.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=Memory.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=MemoryManager.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=MemoryPool.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=OperatingSystem.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=Runtime.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=":" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.lang:type=Threading.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.nio:type=BufferPool.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/admin/statistics_java.util.logging:type=Logging.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/data/analyzed/2020/12/ABR001-002-AB12/LR_model_accuracy.csv">
           <value>
             <Attribute>
@@ -200,55 +81,6 @@
           </value>
         </entry>
         <entry key="/data/analyzed/2020/12/ABR001-002-AB12/dataset_describe.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/analyzed/2022/06/UCIHD-001-AB12/LR_model_accuracy.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/analyzed/2022/06/UCIHD-001-AB12/dataset_describe.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/processed/2020/12/2020-12-ABR001-002-AB12.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="&#9;" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/processed/2022/06/UCIHD-001-AB12.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/raw/2022-06-05-UCIHD-001-AB12.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/test-data/headers.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/test-data/parameters.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
