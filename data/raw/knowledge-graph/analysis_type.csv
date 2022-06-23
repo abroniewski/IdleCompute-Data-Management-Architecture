@@ -1,0 +1,6 @@
+type_id,analysis_name
+A1,XGBoost
+A2,Linear Regression
+A3,Random Forest
+A4,Decision Tree
+A5,SVC

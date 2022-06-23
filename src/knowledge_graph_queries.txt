@@ -1,0 +1,53 @@
+-------------QUERY: TOP IdleTenant -----------
+
+PREFIX : <http://www.IdleCompute/schema/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?user (COUNT(?resource) AS ?count)
+WHERE
+{
+    ?user :submits ?task .
+    ?task :assignedTo ?resource .
+
+}
+GROUP BY ?user
+ORDER BY DESC(?count)
+LIMIT 10
+
+
+-------------QUERY: BOTTOM IdleTenant -----------
+
+PREFIX : <http://www.IdleCompute/schema/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?user (COUNT(?resource) AS ?count)
+WHERE
+{
+    ?user :submits ?task .
+    ?task :assignedTo ?resource .
+
+}
+GROUP BY ?user
+ORDER BY ?count
+LIMIT 10
+
+
+-------------QUERY: SIMILAR IdleHosts BY TASK AND PERFORMANCE-----------
+
+PREFIX : <http://www.IdleCompute/schema/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?user ?modelName ?type (GROUP_CONCAT(DISTINCT ?resourceIP; SEPARATOR=", ") AS ?similarResource)
+WHERE
+{
+    ?user :submits ?task .
+    ?task :analysisType ?model ;
+		:assignedTo ?resource .
+	?model rdfs:label ?modelName .
+    ?resource :hasCapability ?type ;
+        rdfs:label ?resourceIP .
+}
+GROUP BY ?user ?modelName ?type

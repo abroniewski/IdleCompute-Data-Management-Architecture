@@ -1,0 +1,160 @@
+@prefix : <http://www.IdleCompute/schema/schedule-ekg#> .
+@prefix IC: <http://www.IdleCompute/schema/schedule-ekg#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/spec/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@base <http://www.IdleCompute/schema/schedule-ekg#> .
+
+<http://www.IdleCompute/schema/schedule-ekg> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.IdleCompute/schema/schedule-ekg#analysistype
+IC:analysistype rdf:type owl:ObjectProperty ;
+                rdfs:domain IC:Task ;
+                rdfs:range IC:Model ;
+                rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                rdfs:label "analysisType" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#assignedto
+IC:assignedto rdf:type owl:ObjectProperty ;
+              rdfs:domain IC:Task ;
+              rdfs:range IC:Idlehost ;
+              rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+              rdfs:label "assignedTo" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#hascapability
+IC:hascapability rdf:type owl:ObjectProperty ;
+                 rdfs:domain IC:Idlehost ;
+                 rdfs:range IC:Resourcetype ;
+                 rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                 rdfs:label "hasCapability" .
+
+
+###  http://www.idlecompute/schema/schedule-ekg#submits
+<http://www.idlecompute/schema/schedule-ekg#submits> rdf:type owl:ObjectProperty ;
+                                                     rdfs:domain <http://www.idlecompute/schema/schedule-ekg#Idletenant> ;
+                                                     rdfs:range IC:Task ;
+                                                     rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                                                     rdfs:label "submits" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.IdleCompute/schema/schedule-ekg#submittedon
+IC:submittedon rdf:type owl:DatatypeProperty ;
+               rdfs:domain IC:Task ;
+               rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+               rdfs:label "submittedOn" .
+
+
+###  http://www.idlecompute/schema/schedule-ekg#ipaddress
+<http://www.idlecompute/schema/schedule-ekg#ipaddress> rdf:type owl:DatatypeProperty ;
+                                                       rdfs:domain IC:Idlehost ;
+                                                       rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                                                       rdfs:label "IPaddress" .
+
+
+###  http://www.idlecompute/schema/schedule-ekg#organization
+<http://www.idlecompute/schema/schedule-ekg#organization> rdf:type owl:DatatypeProperty ;
+                                                          rdfs:domain <http://www.idlecompute/schema/schedule-ekg#Idletenant> ;
+                                                          rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                                                          rdfs:label "Organization" .
+
+
+###  http://www.idlecompute/schema/schedule-ekg#scheduledon
+<http://www.idlecompute/schema/schedule-ekg#scheduledon> rdf:type owl:DatatypeProperty ;
+                                                         rdfs:domain IC:Task ;
+                                                         rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                                                         rdfs:label "scheduledOn" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.IdleCompute/schema/schedule-ekg#Cpu
+IC:Cpu rdf:type owl:Class ;
+       rdfs:subClassOf IC:Resourcetype ;
+       rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+       rdfs:label "CPU" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#Gpu
+IC:Gpu rdf:type owl:Class ;
+       rdfs:subClassOf IC:Resourcetype ;
+       rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+       rdfs:label "GPU" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#Idlehost
+IC:Idlehost rdf:type owl:Class ;
+            rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+            rdfs:label "IdleHost" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#LinearRegression
+IC:LinearRegression rdf:type owl:Class ;
+                    rdfs:subClassOf IC:Model ;
+                    rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                    rdfs:label "Linear Regression" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#Model
+IC:Model rdf:type owl:Class ;
+         rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+         rdfs:label "Model" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#RandomForest
+IC:RandomForest rdf:type owl:Class ;
+                rdfs:subClassOf IC:Model ;
+                rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                rdfs:label "Random Forest" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#Resourcetype
+IC:Resourcetype rdf:type owl:Class ;
+                rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                rdfs:label "ResourceType" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#Task
+IC:Task rdf:type owl:Class ;
+        rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+        rdfs:label "Task" .
+
+
+###  http://www.IdleCompute/schema/schedule-ekg#Xgboost
+IC:Xgboost rdf:type owl:Class ;
+           rdfs:subClassOf IC:Model ;
+           rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+           rdfs:label "XGBoost" .
+
+
+###  http://www.idlecompute/schema/schedule-ekg#Idletenant
+<http://www.idlecompute/schema/schedule-ekg#Idletenant> rdf:type owl:Class ;
+                                                        rdfs:isDefinedBy <http://www.IdleCompute/schema/schedule-ekg> ;
+                                                        rdfs:label "IdleTenant" .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+<http://www.IdleCompute/schema/schedule-ekg> rdfs:comment "" ;
+                                             rdfs:label "IdleComputeSchedule" .
+
+
+###  Generated by the OWL API (version 5.1.17) https://github.com/owlcs/owlapi/

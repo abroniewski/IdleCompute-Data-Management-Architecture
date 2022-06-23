@@ -17,6 +17,7 @@ seaborn = "*"
 matplotlib = "*"
 pyspark-stubs = "==3.0.0.post3"
 handyspark = "*"
+rdflib = "*"
 
 [dev-packages]
 
