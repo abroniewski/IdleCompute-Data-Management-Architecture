@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 TEMPORAL_ZONE_DIR = '../data/raw'
 TEMP_CONVERTED_DIR = '../data/processedTemp'
-PERSISTENT_ZONE_DIR = '../data/processed/'
+PERSISTENT_ZONE_DIR = '../data/processed'
 HDFS_DIR = './data/processed'
 client = InsecureClient('http://10.4.41.82:9870', user='bdm')  # this IP should be changed to your personal VM
 
@@ -38,7 +38,7 @@ def convert_to_parquet(file_type, in_directory, in_filename, out_directory, out_
 def create_persistent_local_directory(persistent_landing_dir, temporal_landing_dir):
 
     for filename in tqdm(os.listdir(temporal_landing_dir)):  # iterate over all files in directory DIR
-        if not filename.startswith('.'):  # do not process hidden files that start with "."
+        if not filename.startswith('.'):  # do not process hidden files
             metadata = re.split('[-.]', filename)  # splits the filename on '-' and '.' -> creates a list
             persistent_file_path = f"{persistent_landing_dir}/{metadata[0]}/{metadata[1]}"  # uses YYYY/MM subdirectory name
             new_filename = f"{metadata[3]}-{metadata[4]}-{metadata[5]}"  # new file name will be userID-taskID

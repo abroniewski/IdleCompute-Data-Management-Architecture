@@ -11,7 +11,7 @@ def create_ABOX_and_output_to_turtle(graph: Graph):
     Outputs ABOX in turtle format.
     :return: None. Writes to turtle file.
     '''
-    filepath = '../data/raw/knowledge-graph/'
+    filepath = '../data/knowledge-graph/'
 
     analysis_type = pd.read_csv(f"{filepath}analysis_type.csv")
     resource_type = pd.read_csv(f"{filepath}resource_type.csv")
