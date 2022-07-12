@@ -88,7 +88,7 @@ The proof of concept is a data pipeline that stores a user uploaded dataset from
 
 The goal of this project is to develop a theoretical understanding of big data management architecture along with a practical implementation of design choices.
 
-![Date Pipeline Overview](docs/DataPipeline.png)
+![Date Pipeline Overview](docs/DataPipeline.jpg)
 
 1. A file structure is generated from the dataset filename to maintain metadata about each dataset and when it was uploaded. The datasets are landed in `data/processed`
 2. The file is stored in HDFS files structure in Parquet format. This allows for flexibility in reading the data horizontally (rows) or vertically (columns).
@@ -101,7 +101,7 @@ The goal of this project is to develop a theoretical understanding of big data m
 ## Knowledge Graph Queries
 A dummy data-set was created to represent the relationship between data being analyzed and the nodes completing the analysis. The data generator is located here: `data/knowledge-graph/SDM_point.ipynb`. This data is used to generate an ABOX (schema) shown below and TBOX (instances/data) that are then queried in GraphDB after uploading the data.
 
-![Knowledge Graph Schema](docs/IdleComputeSchedule.png)
+![Knowledge Graph Schema](docs/IdleComputeSchedule.jpg)
 
 Graph analytics were used to:
 1. Identify the dataset contributors that contribute to Tasks that most (or fewest) users are interested in analyzing
