@@ -1,46 +1,60 @@
 # IdleCompute Data Management Architecture
 
-![Current Version](https://img.shields.io/badge/version-v0.1-blue)
+![Current Version](https://img.shields.io/badge/version-v1.0-blue)
 ![GitHub contributors](https://img.shields.io/github/contributors/abroniewski/IdleCompute-Data-Management-Architecture)
 ![GitHub stars](https://img.shields.io/github/stars/abroniewski/IdleCompute-Data-Management-Architecture?style=social)
 
 ## Table of contents
 
-- [Getting Started](#getting-started)
-  - [Tools Required](#tools-required)
-  - [Installation](#installation)
-- [Development](#development)
-  - [Part 1: Landing Zone](#part-1-landing-zone)
-    - [Data Sources](#data-sources)
-    - [Data Collector](#data-collector)
-    - [Temporal Landing Zone](#temporal-landing-zone)
-    - [Data Persistance Loader](#data-persistance-loader)
-    - [Persistant Landing](#persistant-landing)
-  - [Part 2: Formatted and Exploitation Zone](#part-2-formatted-and-exploitation-zone)
-- [Running the App](#running-the-app)
-- [Authors](#authors)
-  - [Adam Broniewski](#adam-broniewski)
-  - [Vlada Kylynnyk](#vlada-kylynnyk)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [IdleCompute Data Management Architecture](#idlecompute-data-management-architecture)
+  * [Table of contents](#table-of-contents)
+  * [Getting Started](#getting-started)
+    + [Running the App](#running-the-app)
+  * [The Use Case](#the-use-case)
+    + [Pipeline Highlights](#pipeline-highlights)
+    + [Next Steps](#next-steps)
+  * [How the Data Pipeline Works](#how-the-data-pipeline-works)
+  * [Knowledge Graph Queries](#knowledge-graph-queries)
+  * [Outstanding Major Issues](#outstanding-major-issues)
+    + [Distributing Work](#distributing-work)
+    + [Security](#security)
+  * [Authors](#authors)
+      - [Adam Broniewski](#adam-broniewski)
+      - [Vlada Kylynnyk](#vlada-kylynnyk)
+  * [License](#license)
 
 ## Getting Started
 
 This project has a single branch: `main`
 
-The project is small and will follow the structure below:
+The project has the structure below:
 
-```
-	IdelCompute-Data-Management-Architecture
-	├── README.md
-	├── .gitignore
-	└── src
-		├── all executbale script files
-	└── docs
-		├── support documentation and project descriptions
-	└── data
-		├── raw
-		└── processed
+```	
+IdleCompute-Data-Management-Architecture
+├── LICENSE.md
+├── Pipfile
+├── Pipfile.lock
+├── README.md
+├── data
+│   ├── admin
+│   └── raw
+├── docs
+│   ├── BDM-Project1-Report.pdf
+│   ├── BDM-Project2-Report.pdf
+│   ├── DataPipeline.png
+│   └── IdleComputeSchedule.png
+└── src
+    ├── dataset_analytics.py
+    ├── idle_host_list.py
+    ├── knowledge_graph_ABOX.py
+    ├── knowledge_graph_TBOX.py
+    ├── knowledge_graph_queries.txt
+    ├── knowledge_graph_run.py
+    ├── landing_zone.py
+    ├── main.py
+    ├── partition_dataset.py
+    ├── read_partitioned_dataset.py
+    └── schedule_generation.py
 ```
 
 ### Running the App
@@ -49,75 +63,72 @@ The project is small and will follow the structure below:
 2. install dependencies using pipfile
 3. run main.py. 
 
-This will use the data provided in [data/raw](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/data/raw) and run through the full data pipeline from landing zone, formatted zone and exploitation.
+This will use the sample data provided in [data/raw](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/data/raw) and run through the full data pipeline.
 
-### Tools Required
+## The Use Case
 
-You would require the following tools to develop and run the project:
+This project is a proof of concept for a business idea called "IdleCompute", which aims to leverage idle computer time of individual computers to complete distributed processing. The idea is similar to seti@home or Folding@Home, but is agnostic to industry or academic setting.
 
-* Access to UPC Virtual Machine
-* HDFS
+The proof of concept is a data pipeline that stores a user uploaded dataset from csv or json format, lands it into a persistent storage in Parquet format, completes a parallelized exploratory data analysis, builds a linear regression model, and tests the model's accuracy.
 
-### Installation
+### Pipeline Highlights
+1. The pipeline is dataset agnostic. Model building and exploratory analysis is completed "blind" to the number of attributes in the data set.
+2. Pipeline takes advantage of HDFS file system and Parquet hybrid file format for storage and distribution efficiency
+3. Knowledge graphs are implemented to take advantage of relationship level queries for quality assurance measures
 
-Installation steps for virtual environment and HDFS are locate in [here in /docs](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/docs)
+### Next Steps
+1. Create a temporary hadoop cluster with different user machines acting as nodes in the cluster by scripting necessary hadoop changes.
+2. Implement error checking to ensure requested models can be run on datasets
+3. Implement use of metadata csv that accompanies dataset to provide dataset statistics
+4. Implement model parameter csv to be read for all predictive model parameters.
+5. Remove hard coding of some parameters of schedule (like IP address of nodes and workload %)
+6. Create recursive call for file partitioning for parallelization
 
-## Development
+## How the Data Pipeline Works
 
-The goal of this project is to develop a theoretical understanding of data management architecture along with a practical implementation of design choices. The work is completed in 2 stages:
+The goal of this project is to develop a theoretical understanding of big data management architecture along with a practical implementation of design choices.
 
-1. Landing zone architecture and external data source identification
-2. Formatted and exploitation zone architecture
+![Date Pipeline Overview](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/docs/DataPipeline.jpg?raw=true)
 
-### Part 1: Landing Zone
+1. A file structure is generated from the dataset filename to maintain metadata about each dataset and when it was uploaded. The datasets are landed in `data/processed`
+2. The file is stored in HDFS files structure in Parquet format. This allows for flexibility in reading the data horizontally (rows) or vertically (columns).
+3. A dummy schedule is read to determine when a particular dataset should be processed and which users on the distributed system should be used to complete the processing. Admin files like the schedule are stored in `data/admin`
+4. The dataset is partitioned depending on the number of nodes that exist in the schedule using RDDs and Map/Reduce style operations
+5. Partitioned dataset are stores in `data/partitioned`
+6. The partitioned dataset has descriptive analytics completed. Dataset description is stored in `data/analyzed`, PNG plots are stored in `data/analyzed/plots` and serializable pickle format plots are in `data/analyzed/plots_serialized`
+7. A predictive model is created and stored for future use in `data/analyzed/model`. The model accuracy is stored in `data/analyzed`
 
-The scope is defined by breaking out all the relevant compoenents that need to be implemented.
+## Knowledge Graph Queries
+A dummy data-set was created to represent the relationship between data being analyzed and the nodes completing the analysis. The data generator is located here: `data/knowledge-graph/SDM_point.ipynb`. This data is used to generate an ABOX (schema) shown below and TBOX (instances/data) that are then queried in GraphDB after uploading the data.
 
-#### Data Sources
+![Knowledge Graph Schema](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/docs/IdleComputeSchedule.png?raw=true)
 
-We will use datasets from kaggle that are ~5 MB with ~30 attributes. Datasets will be labelled data with a classification problem challenge.
+Graph analytics were used to:
+1. Identify the dataset contributors that contribute to Tasks that most (or fewest) users are interested in analyzing
+2. Identifying related Resources (nodes) that can have analytical work units assigned for quality assurance
 
-- CSV
-- JSON
-  - Potential 1: [arXiv scholarly articles dataset - 3.34GB](https://www.kaggle.com/datasets/Cornell-University/arxiv)
-  - Potential 2: [Automatic Ticket Classification - 83.4MB](https://www.kaggle.com/datasets/arunagirirajan/automatic-ticket-classification/code)
-- **Assumption:** Dataset could have multiple other sources, types, and formats.
+The queries used in GraphDB can be found in the [knowledge_graph_queries.txt](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/src/knowledge_graph_queries.txt) file.
 
-#### Data Collector
+To test the queries out:
+1. Run [knowledge_graph_run.py](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/src/knowledge_graph_run.py).
+This will generate the two required turtle files that need to be uploaded to GraphDB to run queries required for analysis.
+2. Create a new GraphDB database. For the configuration use the following settings:
+   1. Ruleset:  “RDFS (Optimized)”, Disable owl:sameAs 
+   2. Indexing ID size: 32-bit, enable predicate list index
+3. SPARQL Query and Update. Copy the text from [knowledge_graph_queries.txt](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/src/knowledge_graph_queries.txt) into the editor to run them
+4. Download a free version of GraphDB and create a new GraphDB database. For the configuration use the following settings:
+   1. Ruleset:  “RDFS (Optimized)”, Disable owl:sameAs 
+   2. Indexing ID size: 32-bit, enable predicate list index
 
-IdleCompute compute will have a specification that must be met for data uploads. We would define exactly what the specifications for upload are.
 
-#### Temporal Landing Zone
+## Outstanding Major Issues
+### Distributing Work
+As a whole, the ability to land data, and complete analytics in a distributed manner while remaining "dataset agnostic" was accomplished. The most pressing difficulty is an inability to dictate which node in a cluster will handle which partition of a dataset. It is the view of the authors that using Hadoop "out of the box" in this manner will not be possible. Some manipulation of hadoop source code would be required to assign partitions to specific nodes.
 
-Is it as simple as uploading the file “as is” in the hard drive of the storage mechanism being used.
+As an example, [Folding@Home](https://foldingathome.org/?lng=en) makes use of [Cosm software](https://en.wikipedia.org/wiki/Cosm_(software)) to achieve its distribution. There is significant further work required far beyond this project to bring this to reality. 
 
-- **Assumption:** The incoming data is assumed to be uploaded from the user through the IdleCompute website directly to the temporal landing zone.
-
-#### Data Persistance Loader
-
-This is the script we are using to transform from the original formats (CSV, XML, JSON) to the file format of our choice.
-
-1. Transform data format from incoming into chosen format
-2. Load data from temporal location to permanent location in chosen file system.
-
-- **Suggested by Sergi**: **Parquet + HDFS.** Need to understand exactly why this was suggested and why other options would **not** be used.
-
-#### Persistant Landing
-
-We will need to determine what the format (e.g. Parquet) and schema are (e.g. what the different attributes are named, what the structure looks like, ...what else?) This would be based on the assumed machine learning algorithm used for data analysis.
-
-### Part 2: Formatted and Exploitation Zone
-
-This scope has not yet been developed.
-
-## Running the App
-
-Steps and commands for running the app will be included here
-
-* Example steps:
-  ```
-    Example command
-  ```
+### Security
+To ensure security and keep each data partition tamper-proof, the system would need to be virtualized, meaning a virtual partition would need to be created on each node's machine. To ensure the accuracy of each computation, duplicates would need to be completed by different machines and compared against each other.
 
 ## Authors
 
@@ -135,9 +146,4 @@ Steps and commands for running the app will be included here
 
 `IdleCompute Data Management Architecture` is open source software [licensed as MIT][license].
 
-## Acknowledgments
-
-....
-
-[//]: #
 [license]: https://github.com/abroniewski/LICENSE.md
