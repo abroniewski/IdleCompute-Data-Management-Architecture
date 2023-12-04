@@ -6,22 +6,19 @@
 
 ## Table of contents
 
-- [IdleCompute Data Management Architecture](#idlecompute-data-management-architecture)
-  * [Table of contents](#table-of-contents)
-  * [Getting Started](#getting-started)
-    + [Running the App](#running-the-app)
-  * [The Use Case](#the-use-case)
-    + [Pipeline Highlights](#pipeline-highlights)
-    + [Next Steps](#next-steps)
-  * [How the Data Pipeline Works](#how-the-data-pipeline-works)
-  * [Knowledge Graph Queries](#knowledge-graph-queries)
-  * [Outstanding Major Issues](#outstanding-major-issues)
-    + [Distributing Work](#distributing-work)
-    + [Security](#security)
-  * [Authors](#authors)
-      - [Adam Broniewski](#adam-broniewski)
-      - [Vlada Kylynnyk](#vlada-kylynnyk)
-  * [License](#license)
+- [Getting Started](#getting-started)
+  - [Running the App](#running-the-app)
+- [The Use Case](#the-use-case)
+  - [Pipeline Highlights](#pipeline-highlights)
+- [How the Data Pipeline Works](#how-the-data-pipeline-works)
+- [Knowledge Graph Queries](#knowledge-graph-queries)
+- [Outstanding Major Issues](#outstanding-major-issues)
+  - [Distributing Work](#distributing-work)
+  - [Security](#security)
+- [Authors](#authors)
+  - [Adam Broniewski](#adam-broniewski) -> [GitHub](https://github.com/abroniewski) | [LinkedIn](https://www.linkedin.com/in/abroniewski/) | [Website](https://adambron.com)
+  - [Vlada Kylynnyk](#vlada-kylynnyk) -> [GitHub](https://github.com/Vladka396)
+- [License](#license)
 
 ## Getting Started
 
@@ -67,7 +64,7 @@ This will use the sample data provided in [data/raw](https://github.com/abroniew
 
 ## The Use Case
 
-This project is a proof of concept for a business idea called "IdleCompute", which aims to leverage idle computer time of individual computers to complete distributed processing. The idea is similar to seti@home or Folding@Home, but is agnostic to industry or academic setting.
+This project is a proof of concept for a startup business called "IdleCompute", which aims to leverage idle computer time of individual computers to complete distributed processing. The idea is similar to seti@home or Folding@Home, but is agnostic to industry or academic setting.
 
 The proof of concept is a data pipeline that stores a user uploaded dataset from csv or json format, lands it into a persistent storage in Parquet format, completes a parallelized exploratory data analysis, builds a linear regression model, and tests the model's accuracy.
 
@@ -76,17 +73,7 @@ The proof of concept is a data pipeline that stores a user uploaded dataset from
 2. Pipeline takes advantage of HDFS file system and Parquet hybrid file format for storage and distribution efficiency
 3. Knowledge graphs are implemented to take advantage of relationship level queries for quality assurance measures
 
-### Next Steps
-1. Create a temporary hadoop cluster with different user machines acting as nodes in the cluster by scripting necessary hadoop changes.
-2. Implement error checking to ensure requested models can be run on datasets
-3. Implement use of metadata csv that accompanies dataset to provide dataset statistics
-4. Implement model parameter csv to be read for all predictive model parameters.
-5. Remove hard coding of some parameters of schedule (like IP address of nodes and workload %)
-6. Create recursive call for file partitioning for parallelization
-
 ## How the Data Pipeline Works
-
-The goal of this project is to develop a theoretical understanding of big data management architecture along with a practical implementation of design choices.
 
 ![Date Pipeline Overview](docs/DataPipeline.jpg)
 
@@ -99,13 +86,14 @@ The goal of this project is to develop a theoretical understanding of big data m
 7. A predictive model is created and stored for future use in `data/analyzed/model`. The model accuracy is stored in `data/analyzed`
 
 ## Knowledge Graph Queries
-A dummy data-set was created to represent the relationship between data being analyzed and the nodes completing the analysis. The data generator is located here: `data/knowledge-graph/SDM_point.ipynb`. This data is used to generate an ABOX (schema) shown below and TBOX (instances/data) that are then queried in GraphDB after uploading the data.
-
-![Knowledge Graph Schema](docs/IdleComputeSchedule.jpg)
 
 Graph analytics were used to:
 1. Identify the dataset contributors that contribute to Tasks that most (or fewest) users are interested in analyzing
 2. Identifying related Resources (nodes) that can have analytical work units assigned for quality assurance
+
+A dummy data-set was created to represent the relationship between data being analyzed and the nodes completing the analysis. The data generator is located here: `data/knowledge-graph/SDM_point.ipynb`. This data is used to generate an ABOX (schema) shown below and TBOX (instances/data) that are then queried in GraphDB after uploading the data.
+
+<img src="docs/IdleComputeSchedule.jpg" width="500"/>
 
 The queries used in GraphDB can be found in the [knowledge_graph_queries.txt](https://github.com/abroniewski/IdleCompute-Data-Management-Architecture/tree/main/src/knowledge_graph_queries.txt) file.
 
